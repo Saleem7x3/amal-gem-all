@@ -16,17 +16,22 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Gradle
+      # STEP 1: Delete the broken wrapper folder to prevent interference
+      - name: Clean Broken Wrapper
+        run: rm -rf gradle/wrapper gradlew gradlew.bat
+
+      # STEP 2: Force install a stable, compatible Gradle version
+      - name: Setup Gradle 8.2
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 8.2
 
-      # NOTICE: No ./ and no w. This uses GitHub's fresh Gradle.
+      # STEP 3: Build using the fresh 'gradle' command
       - name: Build with Gradle
-        run: gradle assembleDebug
+        run: gradle assembleDebug --stacktrace
 
-      - name: Upload Artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Amaal-APK
+          name: Amaal-Final-APK
           path: app/build/outputs/apk/debug/app-debug.apk
