@@ -19,14 +19,22 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          # REMOVED the 'cache: gradle' line temporarily 
-          # to debug if files are being found
 
-      - name: List files (Debug Step)
-        run: ls -R  # This will print your file structure in the log so we can see where the files are
+      # NEW: This step installs Gradle manually so we don't need the .jar file
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.2
 
       - name: Grant Execute Permission for Gradlew
         run: chmod +x gradlew
 
+      # Use the 'gradle' command directly instead of './gradlew'
       - name: Build with Gradle
-        run: ./gradlew assembleDebug
+        run: gradle assembleDebug
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Amaal-v1.0-Debug
+          path: app/build/outputs/apk/debug/app-debug.apk
