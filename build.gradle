@@ -1,16 +1,17 @@
+// ~/agg/build.gradle
 buildscript {
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
+        // Match this to your local Android Studio version if known, 
+        // 8.1.0 is safe for Gradle 8.2
         classpath 'com.android.tools.build:gradle:8.1.0'
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
+// Logic for cleaning the build folder
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }

@@ -1,5 +1,4 @@
 name: Amaal CI Build
-
 on:
   push:
     branches: [ "main", "master" ]
@@ -9,7 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -20,16 +18,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # NEW: This step installs Gradle manually so we don't need the .jar file
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 8.2
 
-      - name: Grant Execute Permission for Gradlew
-        run: chmod +x gradlew
-
-      # Use the 'gradle' command directly instead of './gradlew'
+      # Use 'gradle' directly. Do NOT use './gradlew'
       - name: Build with Gradle
         run: gradle assembleDebug
 
